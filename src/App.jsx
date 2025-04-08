@@ -5,8 +5,16 @@ import { languages } from './languages'
 function App() {
 
   const [currentWord, setCurrentWord] = useState('react')
+  const [guessedLetters, setGuessedLetters] = useState([])
+  console.log(guessedLetters)
 
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'
+
+  function addGuessedLetter(letter) {
+    setGuessedLetters(prevLetters => 
+      prevLetters.includes(letter) ? prevLetters : [...prevLetters, letter]
+    )
+  }
 
   const languageElements = languages.map(lang => (
     <span 
@@ -26,7 +34,12 @@ function App() {
   ))
 
   const keyboardElements = alphabet.split('').map(letter => (
-    <button key={letter}>{letter.toUpperCase()}</button>
+    <button 
+      key={letter} 
+      onClick={() => addGuessedLetter(letter)}
+    >
+      {letter.toUpperCase()}
+    </button>
   ))
 
   return (
