@@ -30,7 +30,9 @@ function App() {
   ))
 
   const letterElements = currentWord.split('').map((letter, index) => (
-    <span key={index}>{letter.toUpperCase()}</span>
+    <span key={index}>
+      { guessedLetters.includes(letter) ? letter.toUpperCase() : '' }
+    </span>
   ))
 
   const keyboardElements = alphabet.split('').map(letter => {
@@ -43,7 +45,6 @@ function App() {
       wrong: isWrong
     })
 
-    console.log(className)
     return (
       <button 
       key={letter} 
