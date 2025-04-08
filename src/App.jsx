@@ -21,18 +21,22 @@ function App() {
     )
   }
 
-  const languageElements = languages.map(lang => (
-    <span 
-      className='chip' 
-      style={{
-        backgroundColor: lang.backgroundColor,
-        color: lang.color
-      }}
-      key={lang.name}
-    >
-      {lang.name}
-    </span>
-  ))
+  const languageElements = languages.map((lang, index) => {
+    const isLanguageLost = index < wrongGuessCount
+
+    return (
+      <span 
+        className={`chip ${isLanguageLost ? 'lost' : ''}`}
+        style={{
+          backgroundColor: lang.backgroundColor,
+          color: lang.color
+        }}
+        key={lang.name}
+      >
+        {lang.name}
+      </span>
+    )
+  })
 
   const letterElements = currentWord.split('').map((letter, index) => (
     <span key={index}>
