@@ -3,12 +3,15 @@ import './App.css'
 import { languages } from './languages'
 import { clsx } from 'clsx'
 import { getFarewellText, getRandomWord } from './utils.js'
+import Confetti from 'react-confetti'
 
 function App() {
 
   // State values
   const [currentWord, setCurrentWord] = useState(() => getRandomWord())
   const [guessedLetters, setGuessedLetters] = useState([])
+
+  console.log(currentWord)
 
   // Derived values
   const numGuessesLeft = languages.length - 1
@@ -124,6 +127,15 @@ function App() {
 
   return (
     <main>
+      {
+        isGameWon && 
+          <Confetti 
+            recycle={false} 
+            numberOfPieces={1000} 
+            width={window.innerWidth || 300}
+            height={window.innerHeight || 200}
+          />
+      }
       <header>
         <h1>Assembly: Endgame</h1>
         <p>Guess the word within 8 attempts to keep the programming world safe from Assembly!</p>
