@@ -2,12 +2,12 @@ import { useState } from 'react'
 import './App.css'
 import { languages } from './languages'
 import { clsx } from 'clsx'
-import { getFarewellText } from './utils.js'
+import { getFarewellText, getRandomWord } from './utils.js'
 
 function App() {
 
   // State values
-  const [currentWord, setCurrentWord] = useState('react')
+  const [currentWord, setCurrentWord] = useState(() => getRandomWord())
   const [guessedLetters, setGuessedLetters] = useState([])
 
   // Derived values
@@ -26,6 +26,11 @@ function App() {
     setGuessedLetters(prevLetters => 
       prevLetters.includes(letter) ? prevLetters : [...prevLetters, letter]
     )
+  }
+
+  function startNewGame() {
+    setCurrentWord(getRandomWord())
+    setGuessedLetters([])
   }
 
   const languageElements = languages.map((lang, index) => {
@@ -148,7 +153,13 @@ function App() {
       <section className='keyboard'>
         {keyboardElements}
       </section>
-      {isGameOver && <button className='new-game'>New Game</button>}
+      {isGameOver && 
+        <button 
+          className='new-game'
+          onClick={startNewGame}
+        >
+          New Game
+        </button>}
     </main>
   )
 }
