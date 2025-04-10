@@ -2,6 +2,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 480px;
 }
 
 header {
@@ -74,6 +75,7 @@ span.chip {
   border-radius: 3px;
   padding: 4.5px;
   position: relative;
+  font-size: 0.75rem;
 }
 
 /* Dimmed overlay with skull on "lost" languages */
@@ -118,16 +120,17 @@ section.keyboard {
   gap: 8px;
   justify-content: center;
   max-width: 450px;
-  margin-bottom: 36px;
+  margin: 4em auto 2rem;
 }
 
 section.keyboard > button {
-  height: 35px;
-  width: 35px;
+  height: 40px;
+  width: 40px;
   background-color: #FCBA29;
   border: 1px solid #D7D7D7;
-  border-radius: 3px;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 1rem;
 }
 
 section.keyboard > button.correct {
