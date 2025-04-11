@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import './App.css'
-import { languages } from './languages'
+import { languages } from './data/languages.js'
 import { clsx } from 'clsx'
-import { getFarewellText, getRandomWord } from './utils.js'
+import { getRandomWord } from './utils/utils.js'
 import Confetti from 'react-confetti'
+import Header from './components/Header.jsx'
+import GameStatus from './components/GameStatus.jsx'
 
 function App() {
 
@@ -20,7 +22,7 @@ function App() {
   const isGameLost = wrongGuessCount >= numGuessesLeft
   const isGameOver = isGameWon || isGameLost
   const lastGuessedLetter = guessedLetters[guessedLetters.length - 1] 
-  const isLastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter)
+  
   
   // Static  values
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'
@@ -91,40 +93,6 @@ function App() {
     )
   })
 
-  const gameStatusClass = clsx('game-status', {
-    won: isGameWon,
-    lost: isGameLost,
-    farewell: !isGameOver && isLastGuessIncorrect
-  })
-
-  function renderGameStatus() {
-    if(!isGameOver && isLastGuessIncorrect) {
-      return (
-        <p className='farewell-message'>
-          { getFarewellText(languages[wrongGuessCount - 1].name) }
-        </p>
-      )
-    }
-
-    if(isGameWon) {
-      return (
-        <>
-          <h2>You win!</h2>
-          <p>Well done! 🎉</p>
-        </>
-      )
-    } 
-    if(isGameLost) {
-      return (
-        <>
-          <h2>Game over!</h2>
-          <p>You lose! Better start learning Assembly 😭</p>
-        </>
-      )
-    }
-    return null
-  }
-
   return (
     <main>
       {
@@ -136,16 +104,17 @@ function App() {
             height={window.innerHeight || 200}
           />
       }
-      <header>
-        <h1>Assembly: Endgame</h1>
-        <p>Guess the word within 8 attempts to keep the programming world safe from Assembly!</p>
-      </header>
-      <section 
-        aria-live='polite' 
-        role='status'
-        className={gameStatusClass}>
-        { renderGameStatus() }
-      </section>
+      <Header />
+      <GameStatus
+        languages={languages} 
+        isGameOver={isGameOver}
+        isGameWon={isGameWon}
+        isGameLost={isGameLost}
+        wrongGuessCount={wrongGuessCount}
+        currentWord={currentWord}
+        lastGuessedLetter={lastGuessedLetter}
+      />
+      
       <section className='language-chips'>
         {languageElements}
       </section>
