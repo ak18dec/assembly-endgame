@@ -2,7 +2,7 @@ import { clsx } from 'clsx'
 import { getFarewellText } from '../utils/utils';
 
 export default function GameStatus(props) {
-    const isLastGuessIncorrect = props.lastGuessedLetter && !props.currentWord.includes(props.lastGuessedLetter)
+    const isLastGuessIncorrect = props.lastGuessedLetter && !props.word.includes(props.lastGuessedLetter)
 
     function renderGameStatus () {
         if(!props.isGameOver && isLastGuessIncorrect) {
@@ -41,10 +41,11 @@ export default function GameStatus(props) {
       })
 
     return (
-        <section 
+      <section 
         aria-live='polite' 
         role='status'
-        className={gameStatusClass}>
+        className={gameStatusClass}
+      >
         { renderGameStatus() }
       </section>
     )

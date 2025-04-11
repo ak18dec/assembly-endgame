@@ -9,20 +9,22 @@ import GameStatus from './components/GameStatus.jsx'
 import LanguageElements from './components/LanguageElements.jsx'
 import Keyboard from './components/Keyboard.jsx'
 
+const totalGuessLimit = languages.length - 1
+
 function App() {
 
   // State values
-  const [currentWord, setCurrentWord] = useState(() => getRandomWord())
+  const [word, setWord] = useState(() => getRandomWord())
   const [guessedLetters, setGuessedLetters] = useState([])
 
-  console.log(currentWord)
+  console.log(word)
 
   // Derived values
-  const numGuessesLeft = languages.length - 1
-  const wrongGuessCount = guessedLetters.filter(letter => !currentWord.includes(letter)).length
-  const isGameWon = currentWord.split('').every(letter => guessedLetters.includes(letter))
-  const isGameLost = wrongGuessCount >= numGuessesLeft
-  const isGameOver = isGameWon || isGameLost
+  const wrongGuessCount = guessedLetters.filter(letter => !word.includes(letter)).length
+  const remainingGuesses = totalGuessLimit - wrongGuessCount
+  const isGameWon = word.split('').every(letter => guessedLetters.includes(letter))
+  const isGameOver = isGameWon || remainingGuesses < 1
+  const isGameLost = isGameOver && !isGameWon
   const lastGuessedLetter = guessedLetters[guessedLetters.length - 1] 
   
   function addGuessedLetter(letter) {
@@ -32,14 +34,11 @@ function App() {
   }
 
   function startNewGame() {
-    setCurrentWord(getRandomWord())
+    setWord(getRandomWord())
     setGuessedLetters([])
   }
 
-
-
-  const letterElements = currentWord.split('').map((letter, index) => {
-    
+  const letterElements = word.split('').map((letter, index) => {
     const shouldRevealLetter = isGameLost || guessedLetters.includes(letter)
     const letterClassName = clsx(
       isGameLost && !guessedLetters.includes(letter) && 'missed-letter'
@@ -51,8 +50,6 @@ function App() {
       </span>
     )
   })
-
-  
 
   return (
     <main>
@@ -72,10 +69,9 @@ function App() {
         isGameWon={isGameWon}
         isGameLost={isGameLost}
         wrongGuessCount={wrongGuessCount}
-        currentWord={currentWord}
+        word={word}
         lastGuessedLetter={lastGuessedLetter}
       />
-      
       <LanguageElements
         languages={languages}
         wrongGuessCount={wrongGuessCount} 
@@ -85,27 +81,27 @@ function App() {
       </section>
       {/* Combined visually-hidden aria-live region for status updates */}
       <section 
-                className="sr-only" 
-                aria-live="polite" 
-                role="status"
-            >
-                <p>
-                    {currentWord.includes(lastGuessedLetter) ? 
-                        `Correct! The letter ${lastGuessedLetter} is in the word.` : 
-                        `Sorry, the letter ${lastGuessedLetter} is not in the word.`
-                    }
-                    You have {numGuessesLeft} attempts left.
-                </p>
-                <p>Current word: {currentWord.split("").map(letter => 
-                guessedLetters.includes(letter) ? letter + "." : "blank.")
-                .join(" ")}</p>
+        className="sr-only" 
+        aria-live="polite" 
+        role="status"
+      >
+        <p>
+            {word.includes(lastGuessedLetter) ? 
+                `Correct! The letter ${lastGuessedLetter} is in the word.` : 
+                `Sorry, the letter ${lastGuessedLetter} is not in the word.`
+            }
+            You have {remainingGuesses} attempts left.
+        </p>
+        <p>Current word: {word.split("").map(letter => 
+        guessedLetters.includes(letter) ? letter + "." : "blank.")
+        .join(" ")}</p>
             
-            </section>
+      </section>
       <Keyboard
         guessedLetters={guessedLetters}
         addGuessedLetter={addGuessedLetter}
         isGameOver={isGameOver}
-        word={currentWord}
+        word={word}
       />
       {isGameOver && 
         <button 
