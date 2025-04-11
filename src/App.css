@@ -20,6 +20,21 @@ header > p {
   color: #8E8E8E;
 }
 
+header .game-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  color: #F9F4DAe6;
+}
+
+header .game-info > span {
+  font-size: 0.875rem;
+  border: 1px solid #8E8E8E;;
+  border-radius: 3px;
+  padding: 4px;
+}
+
 section.game-status {
   display: flex;
   flex-direction: column;

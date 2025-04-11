@@ -62,7 +62,9 @@ function App() {
             height={window.innerHeight || 200}
           />
       }
-      <Header />
+      <Header 
+        remainingGuesses={remainingGuesses}
+      />
       <GameStatus
         languages={languages} 
         isGameOver={isGameOver}
