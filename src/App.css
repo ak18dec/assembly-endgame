@@ -135,7 +135,7 @@ section.keyboard {
   gap: 8px;
   justify-content: center;
   max-width: 450px;
-  margin: 4em auto 2rem;
+  margin: 3em auto 2rem;
 }
 
 section.keyboard > button {
@@ -161,7 +161,7 @@ section.keyboard > button:disabled {
 }
 
 button.new-game {
-  background-color: #11B5E5;
+  background-color: #055369;
   border: 1px solid #D7D7D7;
   border-radius: 4px;
   width: 225px;
@@ -170,6 +170,9 @@ button.new-game {
   display: block;
   margin-inline: auto;
   cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #F9F4DA;
 }
 
 .sr-only {

@@ -125,7 +125,7 @@ function App() {
         isGameOver={isGameOver}
         word={word}
       />
-      {isGameOver && 
+      {true && 
         <button 
           className='new-game'
           onClick={startNewGame}
