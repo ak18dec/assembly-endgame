@@ -33,6 +33,7 @@ header .game-info > span {
   border: 1px solid #8E8E8E;;
   border-radius: 3px;
   padding: 4px;
+  min-width: 140px;
 }
 
 section.game-status {

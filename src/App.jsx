@@ -8,6 +8,7 @@ import Header from './components/Header.jsx'
 import GameStatus from './components/GameStatus.jsx'
 import LanguageElements from './components/LanguageElements.jsx'
 import Keyboard from './components/Keyboard.jsx'
+import { formatTime } from './utils/time.js'
 
 const totalGuessLimit = languages.length - 1
 
@@ -16,14 +17,13 @@ function App() {
   // State values
   const [word, setWord] = useState(() => getRandomWord())
   const [guessedLetters, setGuessedLetters] = useState([])
-
-  console.log(word)
+  const [timerOn, setTimerOn] = useState(true)
 
   // Derived values
   const wrongGuessCount = guessedLetters.filter(letter => !word.includes(letter)).length
   const remainingGuesses = totalGuessLimit - wrongGuessCount
   const isGameWon = word.split('').every(letter => guessedLetters.includes(letter))
-  const isGameOver = isGameWon || remainingGuesses < 1
+  const isGameOver = isGameWon || remainingGuesses < 1 || !timerOn
   const isGameLost = isGameOver && !isGameWon
   const lastGuessedLetter = guessedLetters[guessedLetters.length - 1] 
   
@@ -33,9 +33,26 @@ function App() {
     )
   }
 
+  // Add timer to the game
+  function timer(element, time) {
+    const timeLabel = 'Remaining time:'
+    element.textContent = `${timeLabel} ${formatTime(time)}`
+    const counter = setInterval(() => {
+        time--
+        element.textContent = `${timeLabel} ${formatTime(time)}`
+        if(time==0) {
+          element.textContent = `Time's up`
+          setTimerOn(false)
+          clearInterval(counter)
+        }
+    }, 1000)
+    return counter
+  }
+
   function startNewGame() {
     setWord(getRandomWord())
     setGuessedLetters([])
+    setTimerOn(true)
   }
 
   const letterElements = word.split('').map((letter, index) => {
@@ -64,6 +81,9 @@ function App() {
       }
       <Header 
         remainingGuesses={remainingGuesses}
+        isGameOver={isGameOver}
+        timer={timer}
+        setTimerOn={setTimerOn}
       />
       <GameStatus
         languages={languages} 
