@@ -6,6 +6,8 @@ import { getRandomWord } from './utils/utils.js'
 import Confetti from 'react-confetti'
 import Header from './components/Header.jsx'
 import GameStatus from './components/GameStatus.jsx'
+import LanguageElements from './components/LanguageElements.jsx'
+import Keyboard from './components/Keyboard.jsx'
 
 function App() {
 
@@ -23,10 +25,6 @@ function App() {
   const isGameOver = isGameWon || isGameLost
   const lastGuessedLetter = guessedLetters[guessedLetters.length - 1] 
   
-  
-  // Static  values
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz'
-
   function addGuessedLetter(letter) {
     setGuessedLetters(prevLetters => 
       prevLetters.includes(letter) ? prevLetters : [...prevLetters, letter]
@@ -38,22 +36,7 @@ function App() {
     setGuessedLetters([])
   }
 
-  const languageElements = languages.map((lang, index) => {
-    const isLanguageLost = index < wrongGuessCount
 
-    return (
-      <span 
-        className={`chip ${isLanguageLost ? 'lost' : ''}`}
-        style={{
-          backgroundColor: lang.backgroundColor,
-          color: lang.color
-        }}
-        key={lang.name}
-      >
-        {lang.name}
-      </span>
-    )
-  })
 
   const letterElements = currentWord.split('').map((letter, index) => {
     
@@ -69,29 +52,7 @@ function App() {
     )
   })
 
-  const keyboardElements = alphabet.split('').map(letter => {
-    const isGuessed = guessedLetters.includes(letter)
-    const isCorrect = isGuessed && currentWord.includes(letter)
-    const isWrong = isGuessed && !currentWord.includes(letter)
-
-    const className = clsx({
-      correct: isCorrect,
-      wrong: isWrong
-    })
-
-    return (
-      <button 
-      key={letter} 
-      onClick={() => addGuessedLetter(letter)}
-      disabled={isGameOver}
-      aria-disabled={guessedLetters.includes(letter)}
-      aria-label={`Letter ${letter}`}
-      className={className}
-      >
-        {letter.toUpperCase()}
-      </button>
-    )
-  })
+  
 
   return (
     <main>
@@ -115,9 +76,10 @@ function App() {
         lastGuessedLetter={lastGuessedLetter}
       />
       
-      <section className='language-chips'>
-        {languageElements}
-      </section>
+      <LanguageElements
+        languages={languages}
+        wrongGuessCount={wrongGuessCount} 
+      />
       <section className='word'>
         {letterElements}
       </section>
@@ -139,9 +101,12 @@ function App() {
                 .join(" ")}</p>
             
             </section>
-      <section className='keyboard'>
-        {keyboardElements}
-      </section>
+      <Keyboard
+        guessedLetters={guessedLetters}
+        addGuessedLetter={addGuessedLetter}
+        isGameOver={isGameOver}
+        word={currentWord}
+      />
       {isGameOver && 
         <button 
           className='new-game'
